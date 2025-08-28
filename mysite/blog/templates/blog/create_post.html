@@ -1,0 +1,55 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}Crear Post - Blog{% endblock %}
+
+{% block content %}
+    <div class="post-card">
+        <h1 class="post-title" style="margin-bottom: 30px;">Crear Nuevo Post</h1>
+        
+        <form method="post" enctype="multipart/form-data" style="color: var(--text-secondary);">
+            {% csrf_token %}
+            
+            <div style="margin-bottom: 20px;">
+                <label for="{{ form.title.id_for_label }}" style="display: block; margin-bottom: 5px; color: var(--text-primary);">Título:</label>
+                {{ form.title }}
+            </div>
+            
+            <div style="margin-bottom: 20px;">
+                <label for="{{ form.content.id_for_label }}" style="display: block; margin-bottom: 5px; color: var(--text-primary);">Contenido:</label>
+                {{ form.content }}
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <label for="{{ form.image.id_for_label }}" style="display: block; margin-bottom: 5px; color: var(--text-primary);">Imagen (opcional):</label>
+                {{ form.image }}
+            </div>
+            
+            <div style="display: flex; gap: 15px;">
+                <button type="submit" class="btn">Publicar Post</button>
+                <a href="{% url 'blog:post_list' %}" class="btn" style="background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-secondary);">Cancelar</a>
+            </div>
+        </form>
+    </div>
+
+    <style>
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            background-color: var(--card-bg);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 2px rgba(100, 255, 218, 0.2);
+        }
+        
+        .form-control::placeholder {
+            color: var(--text-secondary);
+        }
+    </style>
+{% endblock %}

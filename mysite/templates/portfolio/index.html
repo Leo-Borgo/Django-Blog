@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="FOTO.png">
+    <title>Portfolio LB</title>
+    <style>
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 35%;            /* ancho fijo para la barra */
+            height: 100vh;
+            overflow-y: auto;
+            padding: 0 30px;
+            box-sizing: border-box;
+        }
+
+        .main-content {
+            margin-left: 35%;      /* arranca justo después de la sidebar */
+            width: 65%;            /* ocupa el resto */
+            padding: 75px 50px;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            overflow-x: hidden;    /* evita scroll horizontal */
+        }
+
+        body {
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+            display: flex;            /* activa flexbox */
+            flex-direction: row;      /* sidebar a la izquierda, contenido a la derecha */
+            overflow-x: hidden;       /* quita scroll horizontal */
+        }
+
+        :root {
+            --bg-color: #0a192f;
+            --text-primary: #e6f1ff;
+            --text-secondary: #8892b0;
+            --accent-color: #64ffda;
+            --card-bg: #112240;
+            --border-color: #233554;
+        }
+
+        [data-theme="light"] {
+            --bg-color: #f8f9fa;
+            --text-primary: #2d3748;
+            --text-secondary: #4a5568;
+            --accent-color: #3182ce;
+            --card-bg: #ffffff;
+            --border-color: #e2e8f0;
+        }
+
+        * {
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            width: 60px;
+            height: 30px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            padding: 3px;
+            z-index: 1000;
+        }
+
+        .theme-toggle-ball {
+            width: 24px;
+            height: 24px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+
+        [data-theme="light"] .theme-toggle-ball {
+            transform: translateX(30px);
+        }
+
+        .nav-link {
+            font-family: Inter;
+            color: var(--text-secondary);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 10px;
+            padding: 8px 0;
+            position: relative;
+            transition: color 0.3s ease, text-shadow 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--accent-color);
+            text-shadow: 0 0 10px var(--accent-color);
+        }
+
+        .scroll-animate {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .scroll-animate.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .project-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border: 1px solid var(--border-color);
+        }
+
+        .social-icons img {
+            filter: brightness(0.8);
+            transition: filter 0.3s ease;
+        }
+
+        .social-icons img:hover {
+            filter: brightness(1.2);
+        }
+
+        [data-theme="light"] .social-icons img {
+            filter: brightness(0.6);
+        }
+
+        [data-theme="light"] .social-icons img:hover {
+            filter: brightness(0.8);
+        }
+    </style>
+</head>
+<body>
+    <div class="theme-toggle" onclick="toggleTheme()">
+        <div class="theme-toggle-ball"></div>
+    </div>
+
+    <div class="sidebar">
+        <h1 style="font-family: Inter; color: var(--text-primary); margin-top: 75px;">Leonardo BORGO</h1>
+        <h3 style="font-family: Inter; color: var(--text-primary); margin-top: 0px;">Estudiante y freelancer</h3>
+        <p style="font-family: Inter, sans-serif; color: var(--text-secondary);">
+            Apasionado por la tecnología, el diseño web <br>y la inteligencia artificial
+        </p>
+
+        <nav style="margin-top: 80px;">
+    <a href="#sobre-mi" class="nav-link">──── Sobre mi</a>
+    <a href="#experiencia" class="nav-link">──── Experiencia</a>
+    <a href="#proyectos" class="nav-link">──── Proyectos</a>
+    <a href="#blog" class="nav-link">──── Blog</a>
+        </nav>
+
+        <div class="social-icons" style="margin-top: 80px;">
+            <a href="https://github.com/Leo-Borgo" target="_blank">
+                <img src="{% static 'portfolio/images/logo_github.png' %}" alt="GitHub" style="width: 40px; height: auto;">
+            </a>
+            <a href="https://www.instagram.com/leoborgo_/" target="_blank">
+                <img src="{% static 'portfolio/images/logo_instagram.png' %}" alt="Instagram" style="width: 40px; height: auto; margin-left: 5px;">
+            </a>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <section id="sobre-mi" class="scroll-animate" style="margin-bottom: 100px;">
+            <h2 style="font-family: Inter; color: var(--text-primary); margin-bottom: 30px;">Sobre mi</h2>
+            <p style="font-family: Inter; color: var(--text-secondary); line-height: 1.6;">
+                ¡Hola! Soy Leonardo Borgo, estudiante y freelancer de Argentina. Me apasiona la tecnología,<br>la inteligencia artificial y todo lo que se puede construir en el mundo digital. Disfruto crear<br>herramientas útiles, automatizar procesos y aprender constantemente.
+                <br><br>
+                Mi camino en este mundo comenzó con la curiosidad de entender cómo funcionan las cosas.<br>Hoy me dedico a explorar cómo combinar el código con la creatividad para resolver<br>problemas reales y generar impacto.
+                <br><br>
+                Actualmente, estoy enfocado en seguir aprendiendo sobre desarrollo web, IA y negocios<br>digitales. Siempre estoy trabajando en nuevos proyectos, probando ideas y buscando<br>maneras de mejorar mis habilidades.
+                <br><br>
+                Cuando no estoy estudiando ni creando, me vas a encontrar jugando al futsal, entrenando<br>o descubriendo nuevas tecnologías que me inspiren.
+            </p>
+        </section>
+
+        <section id="experiencia" class="scroll-animate" style="margin-bottom: 100px;">
+            <h2 style="font-family: Inter; color: var(--text-primary); margin-bottom: 30px;">Experiencia</h2>
+            <p style="font-family: Inter; color: var(--text-secondary); line-height: 1.6;">
+                <strong style="color: var(--text-primary);">Estudiante en el Instituto Huergo</strong><br>
+                <span style="color: var(--accent-color);">2022 - Presente</span><br>
+                Actualmente cursando la orientación de Computación. Enfocado en desarrollo web, 
+                programación y nuevas tecnologías.
+                <br><br>
+                
+                <strong style="color: var(--text-primary);">Proyectos Freelance</strong><br>
+                <span style="color: var(--accent-color);">2024 - Presente</span><br>
+                Trabajos independientes en desarrollo web y automatización. Creación de sitios web 
+                para pequeños negocios y herramientas personalizadas.
+                <br><br>
+                
+                <strong style="color: var(--text-primary);">Autodidacta en Tecnología</strong><br>
+                <span style="color: var(--accent-color);">2021 - Presente</span><br>
+                Aprendizaje continuo en HTML, CSS, JavaScript, Python e inteligencia artificial. 
+                Participación en cursos online y proyectos personales.
+            </p>
+        </section>
+
+        <section id="proyectos" class="scroll-animate">
+            <h2 style="font-family: Inter; color: var(--text-primary); margin-bottom: 30px;">Proyectos</h2>
+            
+            <div class="project-card scroll-animate">
+                <h3 style="font-family: Inter; color: var(--text-primary); margin-bottom: 10px;">Base de Datos SkyBase</h3>
+                <p style="font-family: Inter; color: var(--accent-color); margin-bottom: 15px;">Sistema de gestión de empleados con interfaz gráfica</p>
+
+                <p style="font-family: Inter; color: var(--text-secondary); line-height: 1.6; margin-bottom: 15px;">
+                    Aplicación de escritorio desarrollada en Python con Tkinter para gestionar datos de empleados. 
+                    Permite registrar nombre, cargo y salario, con funcionalidades de guardado automático en JSON, 
+                    exportación a PDF y CSV, cambio de idiomas (español/inglés) y temas claro/oscuro. 
+                    Incluye sistema de menús completo y validación de datos.
+                </p>
+
+                <p style="font-family: Inter; color: var(--text-secondary); margin-bottom: 15px;">
+                    <strong style="color: var(--text-primary);">Características principales:</strong><br>
+                    • Interfaz gráfica intuitiva con Tkinter<br>
+                    • Persistencia de datos en formato JSON<br>
+                    • Exportación a PDF y CSV<br>
+                    • Sistema multiidioma (ES/EN)<br>
+                    • Temas personalizables<br>
+                    • Validación de entrada de datos
+                </p>
+
+                <p style="font-family: Inter; color: var(--text-secondary); margin-bottom: 15px;">
+                    <strong style="color: var(--text-primary);">Tecnologías:</strong> Python, Tkinter, JSON, ReportLab, CSV
+                </p>
+                
+                <a href="https://github.com/Leo-Borgo/Proyecto-2024" target="_blank" style="color: var(--accent-color); text-decoration: none; font-family: Inter;">Ver en GitHub →</a>
+            </div>
+
+            <div class="project-card scroll-animate">
+                <h3 style="font-family: Inter; color: var(--text-primary); margin-bottom: 10px;">Visualización de Terremotos en Tiempo Real</h3>
+                <p style="font-family: Inter; color: var(--accent-color); margin-bottom: 15px;">Sistema de monitoreo y visualización de actividad sísmica global</p>
+
+                <p style="font-family: Inter; color: var(--text-secondary); line-height: 1.6; margin-bottom: 15px;">
+                    Aplicación desarrollada en Python que consume la API de USGS para obtener datos de terremotos 
+                    de las últimas 24 horas. Procesa la información sísmica y genera visualizaciones interactivas 
+                    en un mapa mundial, mostrando la magnitud, ubicación y profundidad de cada evento. 
+                    Los datos se exportan automáticamente a CSV para análisis posterior.
+                </p>
+
+                <p style="font-family: Inter; color: var(--text-secondary); margin-bottom: 15px;">
+                    <strong style="color: var(--text-primary);">Características principales:</strong><br>
+                    • Consumo de API REST de USGS en tiempo real<br>
+                    • Procesamiento de datos geoespaciales con Pandas<br>
+                    • Visualización interactiva con mapas globales<br>
+                    • Filtrado por magnitud sísmica<br>
+                    • Exportación automática a formato CSV<br>
+                    • Información detallada por evento sísmico
+                </p>
+
+                <p style="font-family: Inter; color: var(--text-secondary); margin-bottom: 15px;">
+                    <strong style="color: var(--text-primary);">Tecnologías:</strong> Python, Requests, Pandas, Plotly, USGS API, GeoJSON
+                </p>
+                
+                <a href="https://github.com/Leo-Borgo/SismoStats-Programa/blob/main/terremotos%20API.py" target="_blank" style="color: var(--accent-color); text-decoration: none; font-family: Inter;">Ver en GitHub →</a>
+            </div>
+
+            <div class="project-card scroll-animate">
+                <h3 style="font-family: Inter; color: var(--text-primary); margin-bottom: 10px;">Análisis de Repositorios GitHub</h3>
+                <p style="font-family: Inter; color: var(--accent-color); margin-bottom: 15px;">Dashboard de análisis de popularidad en repositorios de GitHub</p>
+
+                <p style="font-family: Inter; color: var(--text-secondary); line-height: 1.6; margin-bottom: 15px;">
+                    Herramienta de análisis que utiliza la API de GitHub para identificar y visualizar los repositorios 
+                    más populares de la plataforma. Genera gráficos de barras interactivos mostrando estadísticas 
+                    de estrellas, con información detallada de cada repositorio incluyendo descripciones y métricas 
+                    de popularidad. Ideal para análisis de tendencias en desarrollo de software.
+                </p>
+
+                <p style="font-family: Inter; color: var(--text-secondary); margin-bottom: 15px;">
+                    <strong style="color: var(--text-primary);">Características principales:</strong><br>
+                    • Integración con GitHub API REST<br>
+                    • Análisis de métricas de popularidad<br>
+                    • Visualización interactiva con gráficos<br>
+                    • Ranking automático por estrellas<br>
+                    • Información detallada de repositorios<br>
+                    • Interfaz moderna con tema oscuro
+                </p>
+
+                <p style="font-family: Inter; color: var(--text-secondary); margin-bottom: 15px;">
+                    <strong style="color: var(--text-primary);">Tecnologías:</strong> Python, Requests, Plotly, GitHub API, JSON
+                </p>
+                
+                <a href="https://github.com/Leo-Borgo/SismoStats-Programa/blob/main/github%20API.py" target="_blank" style="color: var(--accent-color); text-decoration: none; font-family: Inter;">Ver en GitHub →</a>
+            </div>
+        </section>
+        <section id="blog" class="scroll-animate" style="margin-bottom: 100px;">
+   <h2 style="font-family: Inter; color: var(--text-primary); margin-bottom: 30px;">Blog</h2>
+   
+   {% if recent_posts %}
+       {% for post in recent_posts %}
+       <div class="project-card scroll-animate">
+           <h3 style="font-family: Inter; color: var(--text-primary); margin-bottom: 10px;">{{ post.title }}</h3>
+           <p style="font-family: Inter; color: var(--accent-color); margin-bottom: 15px;">{{ post.published_date|date:"d M Y" }}</p>
+           
+           <p style="font-family: Inter; color: var(--text-secondary); line-height: 1.6; margin-bottom: 15px;">
+               {{ post.content|truncatewords:30 }}
+           </p>
+           
+           <a href="{% url 'blog:post_detail' post.pk %}" style="color: var(--accent-color); text-decoration: none; font-family: Inter;">Leer más →</a>
+       </div>
+       {% endfor %}
+       
+       <div style="text-align: center; margin-top: 30px;">
+           <a href="{% url 'blog:post_list' %}" style="color: var(--accent-color); text-decoration: none; font-family: Inter; padding: 10px 20px; border: 1px solid var(--accent-color); border-radius: 5px;">Ver todos los posts</a>
+       </div>
+   {% else %}
+       <div class="project-card scroll-animate">
+           <h3 style="font-family: Inter; color: var(--text-primary); margin-bottom: 10px;">Próximamente</h3>
+           <p style="font-family: Inter; color: var(--text-secondary); line-height: 1.6;">
+               Pronto compartiré mis pensamientos y experiencias aquí.
+           </p>
+       </div>
+   {% endif %}
+</section>
+    </div>
+
+    <script>
+        // Tema claro/oscuro
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        }
+
+        // Cargar tema guardado
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+
+        // Animaciones de scroll
+        function handleScrollAnimations() {
+            const elements = document.querySelectorAll('.scroll-animate');
+            elements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < window.innerHeight - elementVisible) {
+                    element.classList.add('visible');
+                }
+            });
+        }
+
+        // Smooth scroll para navegación
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                targetElement.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        // Event listeners
+        window.addEventListener('scroll', handleScrollAnimations);
+        window.addEventListener('load', handleScrollAnimations);
+    </script>
+</body>
+</html>

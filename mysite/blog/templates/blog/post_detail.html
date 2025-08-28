@@ -1,0 +1,105 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}{{ post.title }} - Blog{% endblock %}
+
+{% block content %}
+    <article class="post-card">
+        <h1 class="post-title" style="font-size: 2rem; margin-bottom: 15px;">
+            {{ post.title }}
+        </h1>
+        
+        <div class="post-meta" style="margin-bottom: 30px;">
+            <span>Por {{ post.author }}</span>
+            <span> • </span>
+            {% if post.published_date %}
+                <span>{{ post.published_date|date:"d M Y" }}</span>
+            {% else %}
+                <span>Borrador</span>
+            {% endif %}
+        </div>
+        
+        {% if post.image %}
+            <div style="margin-bottom: 30px;">
+                <img src="{{ post.image.url }}" alt="{{ post.title }}" style="max-width: 100%; height: auto; border-radius: 8px;">
+            </div>
+        {% endif %}
+        
+        <div class="post-content" style="font-size: 1.1rem;">
+            {{ post.content|linebreaks }}
+        </div>
+        
+        <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border-color);">
+            <a href="{% url 'blog:post_list' %}" class="btn">← Volver al blog</a>
+        </div>
+    </article>
+
+    <!-- Comentarios existentes -->
+    <section class="post-card" style="margin-top: 30px;">
+        <h3 style="color: var(--text-primary); margin-bottom: 20px;">
+            Comentarios ({{ comments.count }})
+        </h3>
+        
+        {% for comment in comments %}
+            <div style="background-color: var(--bg-color); padding: 15px; border-radius: 8px; margin-bottom: 15px; border: 1px solid var(--border-color);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <strong style="color: var(--text-primary);">{{ comment.name }}</strong>
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <small style="color: var(--text-secondary);">{{ comment.created_date|date:"d M Y H:i" }}</small>
+                        {% if user.is_staff %}
+                            <a href="{% url 'blog:delete_comment' comment.id %}" 
+                               onclick="return confirm('¿Estás seguro de eliminar este comentario?')"
+                               style="color: #ff6b6b; text-decoration: none; font-size: 12px;">
+                                Eliminar
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+                <p style="color: var(--text-secondary); margin: 0;">{{ comment.content|linebreaks }}</p>
+            </div>
+        {% empty %}
+            <p style="color: var(--text-secondary);">Aún no hay comentarios. ¡Sé el primero en comentar!</p>
+        {% endfor %}
+    </section>
+
+    <!-- Formulario de comentarios -->
+    <section class="post-card" style="margin-top: 30px;">
+        <h3 style="color: var(--text-primary); margin-bottom: 20px;">Agregar Comentario</h3>
+        
+        <form method="post">
+            {% csrf_token %}
+            <div style="margin-bottom: 15px;">
+                <label for="{{ comment_form.name.id_for_label }}" style="display: block; margin-bottom: 5px; color: var(--text-primary);">Nombre:</label>
+                {{ comment_form.name }}
+            </div>
+            
+            <div style="margin-bottom: 20px;">
+                <label for="{{ comment_form.content.id_for_label }}" style="display: block; margin-bottom: 5px; color: var(--text-primary);">Comentario:</label>
+                {{ comment_form.content }}
+            </div>
+            
+            <button type="submit" class="btn">Enviar Comentario</button>
+        </form>
+    </section>
+
+    <style>
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            background-color: var(--card-bg);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 2px rgba(100, 255, 218, 0.2);
+        }
+        
+        .form-control::placeholder {
+            color: var(--text-secondary);
+        }
+    </style>
+{% endblock %}
